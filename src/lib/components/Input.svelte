@@ -14,12 +14,14 @@
 			<span class="text-red-400">*</span>
 		{/if}
 	</div>
+	<!-- type must be formatted this way for two way binding input with dynamic type -->
 	<input
-		{type}
+		bind:value
+		{...{ type }}
 		{name}
-		{value}
 		{placeholder}
 		{required}
 		class="text-sm bg-inherit w-full outline-none"
+		autocomplete="off"
 	/>
 </div>
