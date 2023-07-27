@@ -3,7 +3,7 @@
 </script>
 
 <div class="container flex min-h-screen">
-	<div class="m-auto w-full">
+	<div class="m-auto w-full max-w-md">
 		<p class="text-center text-3xl">
 			<strong>B&W</strong>
 			International
