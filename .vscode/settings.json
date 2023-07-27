@@ -1,0 +1,10 @@
+{
+	"editor.defaultFormatter": "svelte.svelte-vscode",
+	"editor.formatOnSave": true,
+	"javascript.preferences.quoteStyle": "double",
+	"typescript.preferences.quoteStyle": "double",
+	"svelte.plugin.svelte.format.config.singleQuote": false,
+	"eslint.format.enable": true,
+	"prettier.quoteProps": "as-needed",
+	"prettier.singleQuote": false
+}

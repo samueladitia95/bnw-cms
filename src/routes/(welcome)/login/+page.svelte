@@ -1,9 +1,16 @@
-<h1 class="text-3xl font-bold underline">
-  THIS IS LOGIN PAGE
-</h1>
+<div class="container flex min-h-screen">
+	<div class="m-auto">
+		<p class="text-center text-3xl">
+			<strong>B&W</strong>
+			International
+		</p>
 
-<style lang="postcss">
-  :global(html) {
-    background-color: theme(colors.blue.100);
-  }
-</style>
+		<p class="text-center pt-6">Admin sign in</p>
+
+		<form class="w-full">
+			<input placeholder="email" type="email" class="w-full" />
+			<input placeholder="passsword" type="password" class="w-full" />
+			<button>Login </button>
+		</form>
+	</div>
+</div>
