@@ -11,6 +11,9 @@ export default {
       },
       fontFamily: {
         "main": ['Source Sans 3', defaultTheme.fontFamily.sans]
+      },
+      colors: {
+        "label": "#666f75"
       }
     },
   },
