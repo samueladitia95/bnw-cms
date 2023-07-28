@@ -1,27 +1,27 @@
 import { createInstance } from "$lib/pocketbase";
-import type { Handle } from '@sveltejs/kit';
+import type { Handle } from "@sveltejs/kit";
 
 export const handle = (async ({ event, resolve }) => {
-  const pb = createInstance()
-  // load the store data from the request cookie string
-  pb.authStore.loadFromCookie(event.request.headers.get('cookie') || '')
-  try {
-    // get an up-to-date auth store state by verifying and refreshing the loaded auth model (if any)
-    if (pb.authStore.isValid) {
-      await pb.collection('users').authRefresh()
-    }
-  } catch (_) {
-    // clear the auth store on failed refresh
-    pb.authStore.clear()
-  }
+	const pb = createInstance();
+	// load the store data from the request cookie string
+	pb.authStore.loadFromCookie(event.request.headers.get("cookie") || "");
+	try {
+		// get an up-to-date auth store state by verifying and refreshing the loaded auth model (if any)
+		if (pb.authStore.isValid) {
+			await pb.collection("users").authRefresh();
+		}
+	} catch (_) {
+		// clear the auth store on failed refresh
+		pb.authStore.clear();
+	}
 
-  const response = await resolve(event)
+	// set pocketbase instance to local
+	event.locals.pb = pb;
 
-  // send back the default 'pb_auth' cookie to the client with the latest store state
-  response.headers.set(
-    'set-cookie',
-    pb.authStore.exportToCookie({ httpOnly: false })
-  )
+	const response = await resolve(event);
 
-  return response
+	// send back the default 'pb_auth' cookie to the client with the latest store state
+	response.headers.set("set-cookie", pb.authStore.exportToCookie({ httpOnly: false }));
+
+	return response;
 }) satisfies Handle;
