@@ -1,20 +1,38 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
+	import Alert from "$lib/components/Alert.svelte";
 	import Button from "$lib/components/Button.svelte";
 	import Input from "$lib/components/Input.svelte";
 	import { pb } from "$lib/pocketbase";
+	import { ClientResponseError } from "pocketbase";
 
 	let email: string;
 	let password: string;
 	let isLoading: boolean = false;
+	let error: string = "";
+	let isError: boolean = false;
 
 	const onSubmit = async () => {
 		try {
+			isError = false;
 			isLoading = true;
+			error = "";
+
 			await pb.collection("users").authWithPassword(email, password);
 			if (pb.authStore.isValid) {
 				goto("/");
 			}
+		} catch (err) {
+			if (err instanceof ClientResponseError) {
+				isError = true;
+				error = err.message;
+			} else {
+				console.log(err);
+			}
+			setTimeout(() => {
+				isError = false;
+				error = "";
+			}, 2500);
 		} finally {
 			isLoading = false;
 		}
@@ -39,3 +57,5 @@
 		</form>
 	</div>
 </div>
+
+<Alert content={error} isShow={isError} />
