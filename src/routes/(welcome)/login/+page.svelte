@@ -1,13 +1,23 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import Input from '$lib/components/Input.svelte';
+	import { pb } from '$lib/pocketbase';
+	import { afterUpdate } from 'svelte';
 
 	let email: string;
 	let password: string;
 
-	const onSubmit = () => {
+	const onSubmit = async () => {
+		await pb.collection('users').authWithPassword(email, password);
+		if (pb.authStore.isValid) {
+			goto('/');
+		}
+	};
+
+	afterUpdate(() => {
 		console.log(email, 'EMAIL');
 		console.log(password, 'PASSWORD');
-	};
+	});
 </script>
 
 <div class="container flex min-h-screen">
@@ -19,7 +29,7 @@
 
 		<p class="text-center py-6">Admin sign in</p>
 
-		<form class="w-full flex flex-col gap-8" on:submit={onSubmit}>
+		<form class="w-full flex flex-col gap-8" on:submit|preventDefault={onSubmit}>
 			<Input
 				name="email"
 				placeholder="email"
