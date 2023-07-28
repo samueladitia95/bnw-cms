@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import Button from '$lib/components/Button.svelte';
 	import Input from '$lib/components/Input.svelte';
 	import { pb } from '$lib/pocketbase';
-	import { afterUpdate } from 'svelte';
 
 	let email: string;
 	let password: string;
@@ -13,11 +13,6 @@
 			goto('/');
 		}
 	};
-
-	afterUpdate(() => {
-		console.log(email, 'EMAIL');
-		console.log(password, 'PASSWORD');
-	});
 </script>
 
 <div class="container flex min-h-screen">
@@ -47,7 +42,8 @@
 				type="password"
 				required
 			/>
-			<button type="submit">Login </button>
+
+			<Button type="submit">Login</Button>
 		</form>
 	</div>
 </div>
