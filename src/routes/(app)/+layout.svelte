@@ -4,7 +4,6 @@
 	import { onMount } from 'svelte';
 
 	onMount(() => {
-		console.log(pb.authStore.isValid, 'IS VALID DI LOGIN PAGE');
 		if (!pb.authStore.isValid) {
 			goto('/login');
 		}
