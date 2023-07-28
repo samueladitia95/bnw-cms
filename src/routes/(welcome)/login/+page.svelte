@@ -29,10 +29,6 @@
 			} else {
 				console.log(err);
 			}
-			setTimeout(() => {
-				isError = false;
-				error = "";
-			}, 2500);
 		} finally {
 			isLoading = false;
 		}
@@ -58,4 +54,4 @@
 	</div>
 </div>
 
-<Alert content={error} isShow={isError} />
+<Alert bind:content={error} bind:isShow={isError} />
