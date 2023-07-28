@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import Button from '$lib/components/Button.svelte';
-	import Input from '$lib/components/Input.svelte';
-	import { pb } from '$lib/pocketbase';
+	import { goto } from "$app/navigation";
+	import Button from "$lib/components/Button.svelte";
+	import Input from "$lib/components/Input.svelte";
+	import { pb } from "$lib/pocketbase";
 
 	let email: string;
 	let password: string;
@@ -11,9 +11,9 @@
 	const onSubmit = async () => {
 		try {
 			isLoading = true;
-			await pb.collection('users').authWithPassword(email, password);
+			await pb.collection("users").authWithPassword(email, password);
 			if (pb.authStore.isValid) {
-				goto('/');
+				goto("/");
 			}
 		} finally {
 			isLoading = false;
