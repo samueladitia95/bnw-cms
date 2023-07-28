@@ -9,14 +9,14 @@
 	let email: string;
 	let password: string;
 	let isLoading: boolean = false;
-	let error: string = "";
+	let errorMessage: string = "";
 	let isError: boolean = false;
 
 	const onSubmit = async () => {
 		try {
 			isError = false;
 			isLoading = true;
-			error = "";
+			errorMessage = "";
 
 			await pb.collection("users").authWithPassword(email, password);
 			if (pb.authStore.isValid) {
@@ -25,7 +25,7 @@
 		} catch (err) {
 			if (err instanceof ClientResponseError) {
 				isError = true;
-				error = err.message;
+				errorMessage = err.message;
 			} else {
 				console.log(err);
 			}
@@ -54,4 +54,4 @@
 	</div>
 </div>
 
-<Alert bind:content={error} bind:isShow={isError} />
+<Alert bind:content={errorMessage} bind:isShow={isError} />
