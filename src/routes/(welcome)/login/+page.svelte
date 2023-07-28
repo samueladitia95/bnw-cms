@@ -6,17 +6,23 @@
 
 	let email: string;
 	let password: string;
+	let isLoading: boolean = false;
 
 	const onSubmit = async () => {
-		await pb.collection('users').authWithPassword(email, password);
-		if (pb.authStore.isValid) {
-			goto('/');
+		try {
+			isLoading = true;
+			await pb.collection('users').authWithPassword(email, password);
+			if (pb.authStore.isValid) {
+				goto('/');
+			}
+		} finally {
+			isLoading = false;
 		}
 	};
 </script>
 
-<div class="container flex min-h-screen">
-	<div class="m-auto w-full max-w-md">
+<div class="container flex min-h-screen text-txt-primary">
+	<div class="m-auto w-full max-w-sm">
 		<p class="text-center text-3xl">
 			<strong>B&W</strong>
 			International
@@ -25,25 +31,11 @@
 		<p class="text-center py-6">Admin sign in</p>
 
 		<form class="w-full flex flex-col gap-8" on:submit|preventDefault={onSubmit}>
-			<Input
-				name="email"
-				placeholder="email"
-				bind:value={email}
-				label="Email"
-				type="email"
-				required
-			/>
+			<Input name="email" bind:value={email} label="Email" type="email" required />
 
-			<Input
-				name="passsword"
-				placeholder="password"
-				bind:value={password}
-				label="Password"
-				type="password"
-				required
-			/>
+			<Input name="passsword" bind:value={password} label="Password" type="password" required />
 
-			<Button type="submit">Login</Button>
+			<Button type="submit" disabled={isLoading} {isLoading}>Login</Button>
 		</form>
 	</div>
 </div>
