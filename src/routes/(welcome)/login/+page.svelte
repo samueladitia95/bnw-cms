@@ -20,6 +20,7 @@
 
 			await pb.collection("users").authWithPassword(email, password);
 			if (pb.authStore.isValid) {
+				document.cookie = pb.authStore.exportToCookie({ httpOnly: false });
 				goto("/");
 			}
 		} catch (err) {
