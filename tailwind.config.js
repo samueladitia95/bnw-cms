@@ -18,7 +18,7 @@ export default {
         "txt-disabled": '#a0a6ac',
         "primary": '#16161a',
         "btn-disabled": '#e4e9ec',
-        
+        "baseAlt2": "#d7dde4"
       }
     },
   },
