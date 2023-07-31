@@ -1,38 +1,43 @@
 <script lang="ts">
-	import { goto } from "$app/navigation";
 	import Alert from "$lib/components/Alert.svelte";
 	import Button from "$lib/components/Button.svelte";
 	import Input from "$lib/components/Input.svelte";
+	import { applyAction, enhance } from "$app/forms";
 	import { pb } from "$lib/pocketbase";
-	import { ClientResponseError } from "pocketbase";
+	import type { SubmitFunction } from "./$types";
+	import { goto } from "$app/navigation";
 
-	let email: string;
-	let password: string;
 	let isLoading: boolean = false;
 	let errorMessage: string = "";
 	let isError: boolean = false;
+	let errors: {
+		[x: string]: string[] | undefined;
+		[x: number]: string[] | undefined;
+		[x: symbol]: string[] | undefined;
+	} = {};
 
-	const onSubmit = async () => {
-		try {
-			isError = false;
-			isLoading = true;
-			errorMessage = "";
+	const handleLogin: SubmitFunction = (input) => {
+		// do something before the form submits
+		isLoading = true;
+		isError = false;
+		errorMessage = "";
+		errors = {};
 
-			await pb.collection("users").authWithPassword(email, password);
-			if (pb.authStore.isValid) {
-				document.cookie = pb.authStore.exportToCookie({ httpOnly: false });
-				goto("/");
-			}
-		} catch (err) {
-			if (err instanceof ClientResponseError) {
-				isError = true;
-				errorMessage = err.message;
-			} else {
-				console.log(err);
-			}
-		} finally {
+		return async ({ result }) => {
+			// do something after the form submits
 			isLoading = false;
-		}
+			const { type } = result;
+			if (type === "success") {
+				pb.authStore.loadFromCookie(await document.cookie);
+				applyAction(result);
+				goto("/");
+			} else if (type === "failure") {
+				errors = result.data?.errors || {};
+			} else if (type === "error") {
+				isError = true;
+				errorMessage = result.error.message;
+			}
+		};
 	};
 </script>
 
@@ -45,10 +50,22 @@
 
 		<p class="text-center py-6">Admin sign in</p>
 
-		<form class="w-full flex flex-col gap-8" on:submit|preventDefault={onSubmit}>
-			<Input name="email" bind:value={email} label="Email" type="email" required />
+		<form class="w-full flex flex-col" action="?/login" method="post" use:enhance={handleLogin}>
+			<Input
+				name="email"
+				label="Email"
+				type="email"
+				required
+				error={errors.email?.length ? errors.email[0] : ""}
+			/>
 
-			<Input name="passsword" bind:value={password} label="Password" type="password" required />
+			<Input
+				name="password"
+				label="Password"
+				type="password"
+				required
+				error={errors.password?.length ? errors.password[0] : ""}
+			/>
 
 			<Button type="submit" disabled={isLoading} {isLoading}>Login</Button>
 		</form>
