@@ -8,8 +8,7 @@
 	import { goto } from "$app/navigation";
 
 	let isLoading: boolean = false;
-	let errorMessage: string = "";
-	let isError: boolean = false;
+	let popoutError: string = "";
 	let errors: {
 		[x: string]: string[] | undefined;
 		[x: number]: string[] | undefined;
@@ -19,8 +18,7 @@
 	const handleLogin: SubmitFunction = (input) => {
 		// do something before the form submits
 		isLoading = true;
-		isError = false;
-		errorMessage = "";
+		popoutError = "";
 		errors = {};
 
 		return async ({ result }) => {
@@ -34,8 +32,7 @@
 			} else if (type === "failure") {
 				errors = result.data?.errors || {};
 			} else if (type === "error") {
-				isError = true;
-				errorMessage = result.error.message;
+				popoutError = result.error.message;
 			}
 		};
 	};
@@ -72,4 +69,4 @@
 	</div>
 </div>
 
-<Alert bind:content={errorMessage} bind:isShow={isError} />
+<Alert bind:content={popoutError} />
