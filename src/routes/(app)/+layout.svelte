@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from "$app/navigation";
 	import { pb } from "$lib/pocketbase";
 
 	const sidebarItems = [
@@ -46,8 +47,15 @@
 		}
 	];
 
-	const handleSignOut = () => {
+	const handleSignOut = async () => {
 		pb.authStore.clear();
+		// ? Clear cookies
+		document.cookie.split(";").forEach(function (c) {
+			document.cookie = c
+				.replace(/^ +/, "")
+				.replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+		});
+		goto("/login");
 	};
 </script>
 
