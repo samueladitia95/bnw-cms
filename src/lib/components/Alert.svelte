@@ -16,7 +16,7 @@
 </script>
 
 <div
-	class="w-full fixed bottom-0 flex items-center justify-center duration-100 {content
+	class="w-full fixed bottom-0 flex items-center justify-center duration-100 p-8 {content
 		? 'translate-y-0'
 		: 'translate-y-20'}"
 >
