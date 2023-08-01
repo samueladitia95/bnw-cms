@@ -7,8 +7,8 @@
 		{
 			svgPath:
 				"M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z",
-			link: "/",
-			header: "Menu 1"
+			link: "/banners",
+			header: "Banners"
 		},
 		{
 			svgPath:
@@ -69,10 +69,7 @@
 		<div class="h-full px-3 py-4 overflow-y-auto bg-gray-50">
 			<ul class="space-y-2 font-medium">
 				<li>
-					<a
-						href="/"
-						class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group"
-					>
+					<a href="/" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
 						<svg
 							class="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
 							aria-hidden="true"
@@ -94,7 +91,10 @@
 					<li>
 						<a
 							href={item.link}
-							class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group"
+							class="flex items-center p-2 text-gray-900 rounded-lg {item.link ===
+							$page.url.pathname
+								? 'bg-gray-200'
+								: 'hover:bg-gray-100'}"
 						>
 							<svg
 								class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
@@ -111,7 +111,7 @@
 				{/each}
 				<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 				<li class="cursor-pointer" on:click={handleSignOut} on:keydown={handleSignOut}>
-					<div class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+					<div class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
 						<svg
 							class="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
 							aria-hidden="true"
