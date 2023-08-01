@@ -1,7 +1,7 @@
-import PocketBase from 'pocketbase'
+import PocketBase from "pocketbase";
 
 export function createInstance() {
-  return new PocketBase('http://13.229.81.3:80')
+	return new PocketBase("http://18.143.227.53:80");
 }
 
-export const pb = createInstance()
+export const pb = createInstance();
