@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
+	import { page } from "$app/stores";
 	import { pb } from "$lib/pocketbase";
 
 	const sidebarItems = [
@@ -56,6 +57,10 @@
 				.replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
 		});
 		goto("/login");
+	};
+
+	const formatPath = (path: string) => {
+		return path.charAt(1).toUpperCase() + path.slice(2);
 	};
 </script>
 
@@ -127,7 +132,14 @@
 			</ul>
 		</div>
 	</aside>
-	<div class="grow py-4 px-2 ml-64">
-		<slot />
+	<div class="grow ml-64">
+		<div class="p-4">
+			<p class="font-semibold text-lg">
+				{$page.url.pathname !== "/" ? formatPath($page.url.pathname) : "Home Page"}
+			</p>
+		</div>
+		<div class="py-4 px-2">
+			<slot />
+		</div>
 	</div>
 </div>
