@@ -1,7 +1,8 @@
 <script>
+	import Input from "$lib/components/Input.svelte";
 	import Panel from "$lib/components/Panel.svelte";
 </script>
 
 <Panel>
-	<h1>THIS IS BANNERS UPLOAD PAGE</h1>
+	<Input name="banner-content" label="Banner Content" type="text" required />
 </Panel>
