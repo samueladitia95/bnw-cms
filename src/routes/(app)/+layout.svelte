@@ -64,14 +64,14 @@
 	};
 </script>
 
-<div class="flex h-screen">
+<div class="flex h-screen text-txt-primary">
 	<aside class="fixed top-0 left-0 z-40 w-64 h-screen">
-		<div class="h-full px-3 py-4 overflow-y-auto bg-gray-50">
+		<div class="h-full px-3 py-4 overflow-y-auto border-r-2 shadow-lg">
 			<ul class="space-y-2 font-medium">
 				<li>
-					<a href="/" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
+					<a href="/" class="flex items-center p-2 rounded-lg hover:bg-baseAlt1">
 						<svg
-							class="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
+							class="w-5 h-5 transition duration-75"
 							aria-hidden="true"
 							xmlns="http://www.w3.org/2000/svg"
 							fill="currentColor"
@@ -91,10 +91,9 @@
 					<li>
 						<a
 							href={item.link}
-							class="flex items-center p-2 text-gray-900 rounded-lg {item.link ===
-							$page.url.pathname
-								? 'bg-gray-200'
-								: 'hover:bg-gray-100'}"
+							class="flex items-center p-2 rounded-lg {item.link === $page.url.pathname
+								? 'bg-baseAlt1'
+								: 'hover:bg-baseAlt1'}"
 						>
 							<svg
 								class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
@@ -111,7 +110,7 @@
 				{/each}
 				<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 				<li class="cursor-pointer" on:click={handleSignOut} on:keydown={handleSignOut}>
-					<div class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
+					<div class="flex items-center p-2 rounded-lg hover:bg-baseAlt1">
 						<svg
 							class="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
 							aria-hidden="true"
@@ -132,13 +131,13 @@
 			</ul>
 		</div>
 	</aside>
-	<div class="grow ml-64">
+	<div class="grow ml-64 bg-bodyColor">
 		<div class="p-4">
-			<p class="font-semibold text-lg">
+			<p class="font-semibold text-xl">
 				{$page.url.pathname !== "/" ? formatPath($page.url.pathname) : "Home Page"}
 			</p>
 		</div>
-		<div class="py-4 px-2">
+		<div class="p-4">
 			<slot />
 		</div>
 	</div>
