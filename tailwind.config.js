@@ -20,7 +20,9 @@ export default {
 				"btn-disabled": "#e4e9ec",
 				baseAlt1: "#e4e9ec",
 				baseAlt2: "#d7dde4",
-				bodyColor: "#f8f9fa"
+				bodyColor: "#f8f9fa",
+				successColor: "#32ad84",
+				successAltColor: "#c4eedc"
 			}
 		}
 	},
