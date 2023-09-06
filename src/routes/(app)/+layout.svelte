@@ -133,9 +133,9 @@
 	</aside>
 	<div class="grow ml-64 bg-bodyColor">
 		<div class="p-4">
-			<p class="font-semibold text-xl">
+			<!-- <p class="font-semibold text-xl">
 				{$page.url.pathname !== "/" ? formatPath($page.url.pathname) : "Home Page"}
-			</p>
+			</p> -->
 		</div>
 		<div class="p-4">
 			<slot />

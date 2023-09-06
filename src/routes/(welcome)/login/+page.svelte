@@ -1,41 +1,27 @@
 <script lang="ts">
+	import { superForm } from "sveltekit-superforms/client";
 	import Alert from "$lib/components/Alert.svelte";
 	import Button from "$lib/components/Button.svelte";
-	import Input from "$lib/components/Input.svelte";
-	import { applyAction, enhance } from "$app/forms";
+	import { _loginSchema } from "./+page";
+	import type { PageData } from "./$types";
 	import { pb } from "$lib/pocketbase";
-	import type { SubmitFunction } from "./$types";
-	import { goto } from "$app/navigation";
 
-	let isLoading: boolean = false;
-	let popoutError: string = "";
-	let errors: {
-		[x: string]: string[] | undefined;
-		[x: number]: string[] | undefined;
-		[x: symbol]: string[] | undefined;
-	} = {};
+	export let data: PageData;
+	let errMsg: string = "";
 
-	const handleLogin: SubmitFunction = (input) => {
-		// do something before the form submits
-		isLoading = true;
-		popoutError = "";
-		errors = {};
-
-		return async ({ result }) => {
-			// do something after the form submits
-			isLoading = false;
-			const { type } = result;
-			if (type === "success") {
-				pb.authStore.loadFromCookie(await document.cookie);
-				applyAction(result);
-				goto("/");
-			} else if (type === "failure") {
-				errors = result.data?.errors || {};
-			} else if (type === "error") {
-				popoutError = result.error.message;
+	const { form, errors, constraints, enhance, delayed } = superForm(data.form, {
+		SPA: true,
+		validators: _loginSchema,
+		async onUpdate({ form }) {
+			try {
+				if (form.valid) {
+					await pb.admins.authWithPassword("test@example.com", "1234567890");
+				}
+			} catch {
+				errMsg = "Wrong Email/Password";
 			}
-		};
-	};
+		}
+	});
 </script>
 
 <div class="container flex min-h-screen text-txt-primary">
@@ -47,26 +33,48 @@
 
 		<p class="text-center py-6">Admin sign in</p>
 
-		<form class="w-full flex flex-col" action="?/login" method="post" use:enhance={handleLogin}>
-			<Input
-				name="email"
-				label="Email"
-				type="email"
-				required
-				error={errors.email?.length ? errors.email[0] : ""}
-			/>
+		<form class="w-full flex flex-col gap-6" method="post" use:enhance>
+			<div class="flex flex-col gap-1">
+				<div class="p-2 rounded bg-gray-100 focus-within:bg-gray-200 duration-200">
+					<div
+						class="text-sm font-semibold mb-1 {$errors.email ? 'text-red-600' : 'text-txt-hint'}"
+					>
+						Email*
+					</div>
+					<input
+						class="text-sm bg-inherit w-full outline-none"
+						autocomplete="off"
+						bind:value={$form.email}
+						{...$constraints.email}
+					/>
+				</div>
+				{#if $errors.email}
+					<p class="text-red-600 text-sm font-medium h-10">{$errors.email[0]}</p>
+				{/if}
+			</div>
 
-			<Input
-				name="password"
-				label="Password"
-				type="password"
-				required
-				error={errors.password?.length ? errors.password[0] : ""}
-			/>
+			<div class="flex flex-col gap-1">
+				<div class="p-2 rounded bg-gray-100 focus-within:bg-gray-200 duration-200">
+					<div
+						class="text-sm font-semibold mb-1 {$errors.password ? 'text-red-600' : 'text-txt-hint'}"
+					>
+						Password*
+					</div>
+					<input
+						class="text-sm bg-inherit w-full outline-none"
+						autocomplete="off"
+						bind:value={$form.password}
+						{...$constraints.password}
+					/>
+				</div>
+				{#if $errors.password}
+					<p class="text-red-600 text-sm font-medium h-10">{$errors.password[0]}</p>
+				{/if}
+			</div>
 
-			<Button type="submit" disabled={isLoading} {isLoading}>Login</Button>
+			<Button type="submit" disabled={$delayed} isLoading={$delayed}>Login</Button>
 		</form>
 	</div>
 </div>
 
-<Alert bind:content={popoutError} />
+<Alert bind:content={errMsg} />
