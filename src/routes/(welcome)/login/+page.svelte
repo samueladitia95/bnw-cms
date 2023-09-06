@@ -15,7 +15,7 @@
 		async onUpdate({ form }) {
 			try {
 				if (form.valid) {
-					await pb.admins.authWithPassword("test@example.com", "1234567890");
+					await await pb.collection("users").authWithPassword(form.data.email, form.data.password);
 				}
 			} catch {
 				errMsg = "Wrong Email/Password";
@@ -44,6 +44,7 @@
 					<input
 						class="text-sm bg-inherit w-full outline-none"
 						autocomplete="off"
+						type="text"
 						bind:value={$form.email}
 						{...$constraints.email}
 					/>
@@ -63,6 +64,7 @@
 					<input
 						class="text-sm bg-inherit w-full outline-none"
 						autocomplete="off"
+						type="password"
 						bind:value={$form.password}
 						{...$constraints.password}
 					/>

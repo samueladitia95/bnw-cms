@@ -2,6 +2,7 @@
 	import { goto } from "$app/navigation";
 	import { page } from "$app/stores";
 	import { pb } from "$lib/pocketbase";
+	import { onMount } from "svelte";
 
 	const sidebarItems = [
 		{
@@ -50,18 +51,19 @@
 
 	const handleSignOut = async () => {
 		pb.authStore.clear();
-		// ? Clear cookies
-		document.cookie.split(";").forEach(function (c) {
-			document.cookie = c
-				.replace(/^ +/, "")
-				.replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-		});
 		goto("/login");
 	};
 
 	const formatPath = (path: string) => {
 		return path.charAt(1).toUpperCase() + path.slice(2);
 	};
+
+	onMount(() => {
+		console.log(pb.authStore.isValid, "+HOME");
+		if (!pb.authStore.isValid) {
+			goto("/");
+		}
+	});
 </script>
 
 <div class="flex h-screen text-txt-primary">
